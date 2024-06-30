@@ -12,8 +12,6 @@ import com.mchalet.todoapp.dtos.ToDoItemRecordDTO;
 import com.mchalet.todoapp.model.ToDoItemModel;
 import com.mchalet.todoapp.repositories.ToDoItemRepository;
 
-import jakarta.validation.Valid;
-
 import java.util.Optional;
 import java.util.UUID;
 

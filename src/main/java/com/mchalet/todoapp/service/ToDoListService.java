@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mchalet.todoapp.controllers.ToDoListController;
-import com.mchalet.todoapp.dtos.ToDoItemRecordDTO;
-import com.mchalet.todoapp.model.ToDoItemModel;
 import com.mchalet.todoapp.repositories.ToDoListRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
