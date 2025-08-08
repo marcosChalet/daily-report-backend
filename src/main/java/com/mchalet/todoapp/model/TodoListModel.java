@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "TODO_LISTS")
+@Relation(collectionRelation = "todolists", itemRelation = "todolist")
 public class TodoListModel extends RepresentationModel<TodoListModel>  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

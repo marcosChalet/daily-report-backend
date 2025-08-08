@@ -81,8 +81,8 @@ public class TodoListController {
     @PutMapping("/todolists/{listId}")
     public ResponseEntity<EntityModel<TodoListModel>> updateTodoList(@PathVariable Integer listId,
                                                  @RequestBody @Valid TodoListDTO todoListDTO) {
-        TodoListModel updated = todoListService.updateTodoList(listId, todoListDTO);
 
+        TodoListModel updated = todoListService.updateTodoList(listId, todoListDTO);
         EntityModel<TodoListModel> response = EntityModel.of(updated);
 
         response.add(linkTo(methodOn(TodoListController.class).getTodoListById(listId)).withRel("self"));

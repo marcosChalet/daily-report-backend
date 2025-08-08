@@ -1,11 +1,11 @@
 package com.mchalet.todoapp.service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import com.mchalet.todoapp.repositories.TodoListRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,20 @@ public class TodoListService {
 	
 	@Autowired
     TodoListRepository todoListRepository;
+
+    public static String[] getNullPropertyNames(Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<String>();
+        for(java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
+    }
 	
     public TodoListModel createTodoList(TodoListDTO todoListDTO) {
         var todoListModel = new TodoListModel();
@@ -36,8 +50,8 @@ public class TodoListService {
         TodoListModel todoList = todoListRepository
                 .findById(id)
                 .orElseThrow(() -> new NoSuchElementException("No value present"));
-        BeanUtils.copyProperties(todoListDTO, todoList);
-        return todoList;
+        BeanUtils.copyProperties(todoListDTO, todoList, getNullPropertyNames(todoListDTO));
+        return todoListRepository.save(todoList);
     }
 
     public void deleteTodoList(Integer id) {

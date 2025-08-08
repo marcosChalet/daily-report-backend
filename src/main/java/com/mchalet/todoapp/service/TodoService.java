@@ -13,6 +13,7 @@ import com.mchalet.todoapp.dtos.TodoDTO;
 import com.mchalet.todoapp.model.TodoModel;
 import com.mchalet.todoapp.repositories.TodoRepository;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,8 +34,11 @@ public class TodoService {
 		var todo = new TodoModel();
 		BeanUtils.copyProperties(todoDTO, todo);
         todoList.getTodos().add(todo);
-        todoListRepository.save(todoList);
-        return todo;
+        List<TodoModel> allTodos = todoListRepository.save(todoList).getTodos();
+        return allTodos
+                .stream()
+                .reduce((f, s) -> s)
+                .orElseThrow(() -> new NoSuchElementException("The todo does not created"));
 	}
 
 	public TodoModel updateTodo(UUID id, TodoDTO todoDTO) {

@@ -17,6 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
+@RequestMapping("/api/v1")
 public class TodoController {
 
 	@Autowired
@@ -26,40 +27,40 @@ public class TodoController {
 	public ResponseEntity<EntityModel<TodoModel>> createTodo(@PathVariable Integer listId,
                                                              @RequestBody @Valid TodoDTO todoDTO) {
 		TodoModel created = todoService.createTodo(listId, todoDTO);
-        EntityModel<TodoModel> model = EntityModel.of(created);
+        EntityModel<TodoModel> response = EntityModel.of(created);
 
         UUID todoId = created.getId();
-        model.add(linkTo(methodOn(TodoController.class).getTodoById(todoId)).withSelfRel());
-        model.add(linkTo(methodOn(TodoController.class).updateTodo(todoId, null)).withRel("update"));
-        model.add(linkTo(methodOn(TodoController.class).deleteTodo(todoId)).withRel("delete"));
+        response.add(linkTo(methodOn(TodoController.class).getTodoById(todoId)).withRel("self"));
+        response.add(linkTo(methodOn(TodoController.class).updateTodo(todoId, null)).withRel("update"));
+        response.add(linkTo(methodOn(TodoController.class).deleteTodo(todoId)).withRel("delete"));
 
         return ResponseEntity
                 .created(linkTo(methodOn(TodoController.class).getTodoById(todoId)).toUri())
-                .body(model);
+                .body(response);
 	}
 
     @GetMapping("/todos/{todoId}")
-    public ResponseEntity<EntityModel<TodoModel>> getTodoById(@PathVariable UUID id) {
+    public ResponseEntity<EntityModel<TodoModel>> getTodoById(@PathVariable UUID todoId) {
 
-        TodoModel todo = todoService.getTodoById(id);
+        TodoModel todo = todoService.getTodoById(todoId);
         EntityModel<TodoModel> model = EntityModel.of(todo);
 
-        model.add(linkTo(methodOn(TodoController.class).getTodoById(id)).withRel("self"));
-        model.add(linkTo(methodOn(TodoController.class).deleteTodo(id)).withRel("delete"));
-        model.add(linkTo(methodOn(TodoController.class).updateTodo(id, null)).withRel("update"));
+        model.add(linkTo(methodOn(TodoController.class).getTodoById(todoId)).withRel("self"));
+        model.add(linkTo(methodOn(TodoController.class).deleteTodo(todoId)).withRel("delete"));
+        model.add(linkTo(methodOn(TodoController.class).updateTodo(todoId, null)).withRel("update"));
 
         return ResponseEntity.ok(model);
     }
 
 	@PutMapping("/todos/{todoId}")
-	public ResponseEntity<EntityModel<TodoModel>> updateTodo(@PathVariable UUID id,
+	public ResponseEntity<EntityModel<TodoModel>> updateTodo(@PathVariable UUID todoId,
 											 @RequestBody @Valid TodoDTO todoDTO) {
 
-		TodoModel updated = todoService.updateTodo(id, todoDTO);
+		TodoModel updated = todoService.updateTodo(todoId, todoDTO);
 
         EntityModel<TodoModel> model = EntityModel.of(updated);
-        model.add(linkTo(methodOn(TodoController.class).getTodoById(id)).withRel("self"));
-        model.add(linkTo(methodOn(TodoController.class).deleteTodo(id)).withRel("delete"));
+        model.add(linkTo(methodOn(TodoController.class).getTodoById(todoId)).withRel("self"));
+        model.add(linkTo(methodOn(TodoController.class).deleteTodo(todoId)).withRel("delete"));
 
         return ResponseEntity.ok(model);
 	}
