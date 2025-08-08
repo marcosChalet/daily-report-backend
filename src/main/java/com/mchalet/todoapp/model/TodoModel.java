@@ -10,9 +10,9 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "TODOS")
-public class ToDoItemModel {
+public class TodoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String toDo;
+    private String todo;
 }

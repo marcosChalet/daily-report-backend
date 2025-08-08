@@ -1,8 +1,8 @@
 package com.mchalet.todoapp.repositories;
 
-import com.mchalet.todoapp.model.ToDoListModel;
+import com.mchalet.todoapp.model.TodoListModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ToDoListRepository extends JpaRepository<ToDoListModel, Integer> { }
+public interface TodoListRepository extends JpaRepository<TodoListModel, Integer> { }

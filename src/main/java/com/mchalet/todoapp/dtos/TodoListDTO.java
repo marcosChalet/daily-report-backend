@@ -6,6 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public record ToDoListRecordDTO(@NotBlank String title,
-                                @NotNull Integer toDoType,
-                                List<TagModel> tags) { }
+public record TodoListDTO(@NotBlank String title,
+                          @NotNull Integer todoType,
+                          List<TagModel> tags) { }

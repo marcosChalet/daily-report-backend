@@ -5,19 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "TODO_LISTS")
-public class ToDoListModel extends RepresentationModel<ToDoListModel>  {
+public class TodoListModel extends RepresentationModel<TodoListModel>  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private Integer toDoType;
+    private Integer todoType;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "todo_list_tags_id")
@@ -25,5 +24,5 @@ public class ToDoListModel extends RepresentationModel<ToDoListModel>  {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "todo_list_id")
-    private List<ToDoItemModel> toDos;
+    private List<TodoModel> todos;
 }
