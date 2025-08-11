@@ -1,4 +1,4 @@
-package com.mchalet.todoapp;
+package com.mchalet.dailyreport;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
