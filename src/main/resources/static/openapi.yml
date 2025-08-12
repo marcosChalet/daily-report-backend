@@ -1,0 +1,575 @@
+openapi: 3.0.3
+info:
+  title: Task-in-Task API
+  version: 1.0.0
+  description: |
+    API RESTful to manage multiple "Task List".
+servers:
+  - url: /api/v1
+
+paths:
+  /tasklists:
+    post:
+      tags:
+        - TaskLists
+      summary: Create new list
+      operationId: createTaskList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskListInput'
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location:
+              description: URI of the created resource
+              schema:
+                type: string
+                format: uri
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListDTO'
+        "400":
+          description: Bad Request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:10:00.000Z"
+                status: 400
+                error: "Bad Request"
+                message: "Validation failed"
+                path: "/api/v1/tasklists"
+                errors:
+                  - field: "title"
+                    rejectedValue: ""
+                    message: "title must not be empty"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists"
+
+    get:
+      tags:
+        - TaskLists
+      summary: Get all lists
+      operationId: listTaskLists
+      responses:
+        "200":
+          description: OK (HAL collection)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _embedded:
+                    type: object
+                    properties:
+                      tasklists:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/TaskListDTO'
+                  _links:
+                    type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists"
+
+  /tasklists/{listId}:
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        description: UUID of the list to get
+        schema:
+          type: string
+          format: uuid
+
+    get:
+      tags:
+        - TaskLists
+      summary: Get one list
+      operationId: getTaskListById
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListDTO'
+        "404":
+          description: Not Found - list does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:11:00.000Z"
+                status: 404
+                error: "Not Found"
+                message: "Task list with id f47ac10b-58cc-4372-a567-0e02b2c3d479 not found"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists"
+
+    put:
+      tags:
+        - TaskLists
+      summary: Update list
+      operationId: updateTaskList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskListInput'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListDTO'
+        "400":
+          description: Bad Request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            example:
+              timestamp: "2025-08-11T21:10:00.000Z"
+              status: 400
+              error: "Bad Request"
+              message: "Validation failed"
+              path: "/api/v1/tasklists"
+              errors:
+                - field: "title"
+                  rejectedValue: ""
+                  message: "title must not be empty"
+        "404":
+          description: Not Found - list does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:11:00.000Z"
+                status: 404
+                error: "Not Found"
+                message: "Task list with id f47ac10b-58cc-4372-a567-0e02b2c3d479 not found"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+    delete:
+      tags:
+        - TaskLists
+      summary: Delete list
+      operationId: deleteTaskList
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not Found - list does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:11:00.000Z"
+                status: 404
+                error: "Not Found"
+                message: "Task list with id f47ac10b-58cc-4372-a567-0e02b2c3d479 not found"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+  /tasklists/{listId}/tasks:
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        description: UUID of the list to get
+        schema:
+          type: string
+          format: uuid
+
+    post:
+      tags:
+        - Tasks
+      summary: Create task
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+        "400":
+          description: Bad Request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:10:00.000Z"
+                status: 400
+                error: "Bad Request"
+                message: "Validation failed"
+                path: "/api/v1/tasklists"
+                errors:
+                  - field: "title"
+                    rejectedValue: ""
+                    message: "title must not be empty"
+        "404":
+          description: Not Found - parent list does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:11:00.000Z"
+                status: 404
+                error: "Not Found"
+                message: "Task list with id 1 and listId f47ac10b-58cc-4372-a567-0e02b2c3d479 not found"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479/tasks"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479/tasks"
+
+  /tasklists/{listId}/tasks/{taskId}:
+    parameters:
+      - name: listId
+        in: path
+        required: true
+        description: UUID of the list to get
+        schema:
+          type: string
+          format: uuid
+      - name: taskId
+        in: path
+        required: true
+        description: Numeric id of the task to get
+        schema:
+          type: integer
+          format: int64
+          example: 123
+
+    put:
+      tags:
+        - Tasks
+      summary: Update task
+      operationId: updateTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskInput'
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+        "400":
+          description: Bad Request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:10:00.000Z"
+                status: 400
+                error: "Bad Request"
+                message: "Validation failed"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479/tasks/1"
+                errors:
+                  - field: "title"
+                    rejectedValue: ""
+                    message: "title must not be empty"
+        "404":
+          description: Not Found - list or task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:11:00.000Z"
+                status: 404
+                error: "Not Found"
+                message: "Task list with id 1 and listId f47ac10b-58cc-4372-a567-0e02b2c3d479 not found"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479/tasks/1"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479/tasks/1"
+
+    delete:
+      tags:
+        - Tasks
+      summary: Delete task
+      operationId: deleteTask
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not Found - list or task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:11:00.000Z"
+                status: 404
+                error: "Not Found"
+                message: "Task list with id 1 and listId f47ac10b-58cc-4372-a567-0e02b2c3d479 not found"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479/tasks/1"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                timestamp: "2025-08-11T21:12:00.000Z"
+                status: 500
+                error: "Internal Server Error"
+                message: "Unexpected error while processing request"
+                path: "/api/v1/tasklists/f47ac10b-58cc-4372-a567-0e02b2c3d479/tasks/1"
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - timestamp
+        - status
+        - error
+        - message
+        - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        errors:
+          type: array
+          description: Lista de erros de validação (opcional)
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              rejectedValue:
+                type: string
+              message:
+                type: string
+      example:
+        timestamp: "2025-08-11T21:00:00.000Z"
+        status: 400
+        error: "Bad Request"
+        message: "Validation failed"
+        path: "/api/v1/tasklists"
+        errors:
+          - field: "title"
+            rejectedValue: ""
+            message: "title must not be empty"
+
+    TagInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+      example:
+        name: "sprint-08-2025"
+
+    TagOutput:
+      allOf:
+        - $ref: '#/components/schemas/TagInput'
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              format: uuid
+      example:
+        id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        name: "sprint-08-2025"
+
+    TagsInput:
+      type: array
+      items:
+        $ref: '#/components/schemas/TagInput'
+      example:
+        - name: "sprint-08-2025"
+        - name: "add-curriculum"
+        - name: "manager-experience"
+
+    TagsOutput:
+      type: array
+      items:
+        $ref: '#/components/schemas/TagOutput'
+      example:
+        - id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+          name: "sprint-08-2025"
+        - id: "f47ac10b-58cc-4372-a567-0e02b2c3d480"
+          name: "add-curriculum"
+        - id: "f47ac10b-58cc-4372-a567-0e02b2c3d481"
+          name: "manager-experience"
+
+    TaskListInput:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          example: "Atividades Realizadas [11/08/2025]"
+        taskType:
+          type: integer
+          example: 2
+        tags:
+          $ref: '#/components/schemas/TagsInput'
+
+    TaskListDTO:
+      type: object
+      required:
+        - id
+        - createdAt
+        - title
+        - taskType
+        - tags
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-08-11T20:45:27.968Z"
+        title:
+          type: string
+          example: "Atividades Realizadas [11/08/2025]"
+        taskType:
+          type: integer
+          example: 1
+        tags:
+          $ref: '#/components/schemas/TagsOutput'
+
+    TaskInput:
+      type: object
+      required:
+        - task
+      properties:
+        task:
+          type: string
+          example: "resolve bug in the payment gateway"
+
+    TaskDTO:
+      allOf:
+        - $ref: '#/components/schemas/TaskInput'
+        - type: object
+          required:
+            - id
+            - listId
+            - createdAt
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 1
+            listId:
+              type: string
+              format: uuid
+            createdAt:
+              type: string
+              format: date-time
