@@ -1,4 +1,4 @@
-package com.mchalet.todoapp.model;
+package com.mchalet.dailyreport.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,19 +12,19 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "TODO_LISTS")
-@Relation(collectionRelation = "todolists", itemRelation = "todolist")
-public class TodoListModel extends RepresentationModel<TodoListModel>  {
+@Relation(collectionRelation = "tasklists", itemRelation = "tasklist")
+public class TaskListModel extends RepresentationModel<TaskListModel>  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private Integer todoType;
+    private Integer taskType;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "todo_list_tags_id")
+    @JoinColumn(name = "task_list_tags_id")
     private List<TagModel> tags;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "todo_list_id")
-    private List<TodoModel> todos;
+    @JoinColumn(name = "task_list_id")
+    private List<TaskModel> tasks;
 }

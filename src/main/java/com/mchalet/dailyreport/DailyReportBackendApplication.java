@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DailyReportBackendApplication  {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DailyReportBackendApplication .class, args);
+		SpringApplication.run(DailyReportBackendApplication.class, args);
 	}
 
 }

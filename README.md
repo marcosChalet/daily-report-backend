@@ -1,9 +1,9 @@
 # Projeto ToDoList com Spring Boot e React com TypeScript
 
-Este é um projeto de uma aplicação Todo List desenvolvida utilizando Spring Boot no backend e React com TypeScript no frontend. A aplicação permite ao usuário criar, visualizar, atualizar e excluir tarefas de listas.
+Este é um projeto de uma aplicação Task List desenvolvida utilizando Spring Boot no backend e React com TypeScript no frontend. A aplicação permite ao usuário criar, visualizar, atualizar e excluir tarefas de listas.
 
-![image](https://github.com/marcosChalet/todolist-java-react/assets/72557256/80aa8989-646c-4b50-9965-fd72c2204cdf)
-![image](https://github.com/marcosChalet/todolist-java-react/assets/72557256/a2dcfb8e-1c9d-4408-9eea-18615d0152e8)
+![image](https://github.com/marcosChalet/tasklist-java-react/assets/72557256/80aa8989-646c-4b50-9965-fd72c2204cdf)
+![image](https://github.com/marcosChalet/tasklist-java-react/assets/72557256/a2dcfb8e-1c9d-4408-9eea-18615d0152e8)
 
 ## Pré-requisitos
 
@@ -34,11 +34,11 @@ O backend foi desenvolvido utilizando o framework Spring Boot e implementa uma A
 
 A estrutura de pacotes do `backend > api` segue a convenção do Spring Boot:
 
-- `com.mchalet.todoapp`: pacote raiz do projeto
-- `com.mchalet.todoapp.controller`: contém os controladores REST para a API
-- `com.mchalet.todoapp.model`: define os modelos de dados da aplicação
-- `com.mchalet.todoapp.repository`: implementa as operações de acesso aos dados
-- `com.mchalet.todoapp.service`: contém as classes de serviço para manipulação das tarefas
+- `com.mchalet.dailyreport`: pacote raiz do projeto
+- `com.mchalet.dailyreport.controller`: contém os controladores REST para a API
+- `com.mchalet.dailyreport.model`: define os modelos de dados da aplicação
+- `com.mchalet.dailyreport.repository`: implementa as operações de acesso aos dados
+- `com.mchalet.dailyreport.service`: contém as classes de serviço para manipulação das tarefas
 
 ### Frontend
 
@@ -47,7 +47,7 @@ O frontend foi desenvolvido utilizando React com TypeScript e faz chamadas para 
 A estrutura do projeto frontend é a seguinte:
 
 - `src`: diretório raiz do código fonte
-- `src/core`: contém as interfaces/types/classes para utilização em todo projeto
+- `src/core`: contém as interfaces/types/classes para utilização em task projeto
 - `src/components`: contém os componentes reutilizáveis da aplicação
 - `src/hooks`: contém os serviços/lógica responsáveis por realizar as chamadas à API
 - `src/App.tsx`: contém a página inicial da aplicação

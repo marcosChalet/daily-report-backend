@@ -1,4 +1,4 @@
-package com.mchalet.todoapp.model;
+package com.mchalet.dailyreport.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

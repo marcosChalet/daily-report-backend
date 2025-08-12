@@ -1,4 +1,4 @@
-package com.mchalet.todoapp.config.security;
+package com.mchalet.dailyreport.config.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

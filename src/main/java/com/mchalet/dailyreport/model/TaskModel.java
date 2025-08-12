@@ -1,4 +1,4 @@
-package com.mchalet.todoapp.model;
+package com.mchalet.dailyreport.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,9 +10,9 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "TODOS")
-public class TodoModel {
+public class TaskModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String todo;
+    private String task;
 }
