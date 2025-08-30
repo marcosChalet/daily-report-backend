@@ -1,4 +1,4 @@
-package com.mchalet.dailyreport.report.domain.shared.vo;
+package com.mchalet.dailyreport.shared.domain.vo;
 
 import java.util.UUID;
 
